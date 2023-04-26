@@ -1,39 +1,5 @@
 # 用SIFT辨識mediapipe做完姿勢辨識之骨架的特徵點
 
-# 目前問題1: 辨識特徵點的時候會辨識到骨架中空的位置(不確定是否正確)
-# 目前問題2: 結果不知要呈現什麼
-# 目前問題3: 用同一部影片，相似度竟然不會維持100%
-# 目前問題4: matchesMask會為None!!!!!
-# 2想辦法1: 將誤差較大的位置標示出來
-# 2想辦法2: 把誤差較大的位置，用箭頭標示該如何改進
-
-'''
-嘗試1:
-1. 提取骨架
-2. 將骨架放在原圖上
-3. 對放好骨架的圖做Canny
-4. 做好Canny後做SIFT
-
-遇到問題1: 測到非常多的背景關鍵點
-遇到問題2: 相似度的結果跟0320以前一樣糟
-'''
-
-'''
-嘗試2:
-1. 用MediaPipe進行去背(因為其經過ML所以去背效果很好)
-2. 針對去背的圖像做SIFT
-3. 將結果進行疊圖 把原圖背景疊在後面(132行尚未執行)
-
-遇到問題1: 相似度的結果大約20~50%左右
-遇到問題2: 若再經過Canny會不夠多匹配描述符
-
-1想辦法1: 將MediaPipe的骨架套上去 -> 相似度有略微上升
-1想辦法2: 因為以此專題的目標而言 相似度的參考是相對的 
-        所以可以想辦法讓數值以數學方式提高 或是換另一種表示的數值
-
-1疑慮1: 不確定是否有正確的達成此辦法
-'''
-
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -448,12 +414,13 @@ cv2.destroyAllWindows()
 # good[0].trainIdx    # 訓練圖像的描述符索引
 # good[0].imgIdx
 
-# 儲存每幀的相似度
-np.savetxt('match ratio', total_match_ratio, delimiter = ',')
-# 儲存秒數
-np.savetxt('time', save_time, delimiter = ',')
-# 儲存內點群數量
-np.savetxt('inlier', total_inlier, delimiter = ',')
+# # 儲存每幀的相似度
+# np.savetxt('match ratio', total_match_ratio, delimiter = ',')
+# # 儲存秒數
+# np.savetxt('time', save_time, delimiter = ',')
+# # 儲存內點群數量
+# np.savetxt('inlier', total_inlier, delimiter = ',')
+
 # total_match_ratio
-max(sum_kp1)
-max(sum_kp2)
+# max(sum_kp1)
+# max(sum_kp2)
