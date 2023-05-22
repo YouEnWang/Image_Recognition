@@ -35,14 +35,6 @@ flann_params = dict(algorithm = 6,
                     key_size = 12,
                     multi_probe_level = 1)
 
-# # 讀取影片檔案(為了先行計算相似度)
-# cap1_1 = cv2.VideoCapture('data/2-1.mp4')
-# cap2_1 = cv2.VideoCapture('data/2-3.mp4')
-
-# # 記錄所有match ratio
-# total_match_ratio = sim.count_Similarity.get_Similarity(cap1_1, cap2_1)
-# counter = 0
-
 # 讀取影片檔案
 cap1 = cv2.VideoCapture('data/2-1.mp4')
 cap2 = cv2.VideoCapture('data/2-3.mp4')
@@ -298,13 +290,10 @@ with mpPose.Pose(
                     img = cv2.drawMatches(img3, kp1, img4, kp2, good, None, **draw_params)
 
                 # 在視窗指定位置放上文字
-                # cv2.putText(img, f'Similarity: {float(round(total_match_ratio[counter], 2))}', (20,50), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,0,0), 2)
                 cv2.putText(img, f'Similarity: {float(round(matchRatio, 2))}', (20,50), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,0,0), 2)
                 # cv2.putText(img, f'Right Hip Angle: {float(round(rightHipAngle1, 2))}', (20,470), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,0,0), 2)
                 # cv2.putText(img, f'Right Hip Angle: {float(round(rightHipAngle2, 2))}', (720,470), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,0,0), 2)
 
-                
-            
             else:       # 相似度為0時，因為沒有匹配點，所以只顯示關鍵點
                 # 將目標影像轉為紅色
                 img4[:,:,0] = 0      # 圖片藍色元素歸0
@@ -313,12 +302,9 @@ with mpPose.Pose(
                 img = np.hstack((cv2.drawKeypoints(img3, kp1, img3, color=(255, 0, 0)), cv2.drawKeypoints(img4, kp2, img4, color=(255, 0, 0))))
                 
                 # 在視窗指定位置放上文字
-                # cv2.putText(img, f'Similarity: {float(round(total_match_ratio[counter], 2))}', (20,50), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,0,0), 2)
                 cv2.putText(img, f'Similarity: {float(round(matchRatio, 2))}', (20,50), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,0,0), 2)
                 # cv2.putText(img, f'Right Hip Angle: {float(round(rightHipAngle1, 2))}', (20,470), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,0,0), 2)
                 # cv2.putText(img, f'Right Hip Angle: {float(round(rightHipAngle2, 2))}', (720,470), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,0,0), 2)
-
-        # counter += 1
         
         # 繪製結果(書面論文顯示)
         img_original = np.hstack((img_original_1, img_original_2))
@@ -326,7 +312,6 @@ with mpPose.Pose(
         img_skeleton = np.hstack((bg3, bg4))
         img_new = np.hstack((img1, img2))
         img_gray = np.hstack((gray1, gray2))
-        # img_without_background = np.hstack()      # 顯示去背的人像
 
         # # 顯示秒數(以右邊影片為主)
         # 取得當前幀數
@@ -348,17 +333,12 @@ with mpPose.Pose(
         # cv2.imshow('img_RGB', img_RGB)
         # cv2.imshow('img_gray', img_gray)
 
-        # cv2.imshow('img1', img1)
-        # cv2.imshow('sobelxy1', sobelxy1)
-        # cv2.imshow('sobelxy2', sobelxy2)
-
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
         
         # 按下中字的空白鍵暫停；再按一次(任意鍵)則繼續執行
         if cv2.waitKey(30) == 32:
             cv2.waitKey(0)
-
 
 # 釋放攝影機
 cap1.release()
