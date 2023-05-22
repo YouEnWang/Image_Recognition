@@ -4,7 +4,6 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import math
-# import Similarity as sim
 
 # https://google.github.io/mediapipe/
 
@@ -197,15 +196,10 @@ with mpPose.Pose(
             rightHipAngle2 = getAngle(right_shoulder2, right_hip2, right_knee2)
             print('rightHipAngle2', rightHipAngle2)
             
-            ## 操作SIFT
+            # # 操作SIFT
             # 將影像轉換為灰度圖像
             gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
             gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
-
-            # # canny邊緣檢測: (圖片,最低門檻,最高門檻)
-            # edges1 = cv2.Canny(gray1, 50, 400)
-            # edges2 = cv2.Canny(gray2, 50, 400)
-            # # 經Canny後的關鍵點會少很多
 
             # 進行 SIFT 特徵提取
             kp1, des1 = sift.detectAndCompute(gray1, None)
@@ -261,7 +255,7 @@ with mpPose.Pose(
             # flags=4: draw the circle around keypoint
             
             # 相似度計算
-            matchNum = np.sum(matchesMask)      # 這樣的matchNum目前我認為比較精確
+            matchNum = np.sum(matchesMask)
             if len(matches) > 0:
                 matchRatio = (matchNum/len(matches))*100
             
@@ -372,55 +366,3 @@ cap2.release()
 
 # 關閉所有 OpenCV 視窗
 cv2.destroyAllWindows()
-
-# 將match ratio進行Mapping
-# 將結果的range重新mapping到100% (除以max乘以100)
-# Total_Match_Ratio = np.array(total_match_ratio)
-# Total_Match_Ratio[0].max
-
-
-# # # 觀察數據
-# # keypoint
-# type(kp1[0])    # 第一個關鍵點的type -> cv2.KeyPoint
-# kp1[0].pt       # 關鍵點位置座標 -> (311.1056823730469, 480.11151123046875)
-# type(kp1[0].pt)   # turple
-# kp1[0].size     # 關鍵點鄰域直徑 -> 4.817803859710693
-# kp1[0].angle    # 關鍵點角度
-# kp1[0].response   # 關鍵點之特徵值
-# kp1[0].octave
-
-# # 儲存keypoint的座標
-# kp_position = [[],[]]
-# len(kp1)
-# kp_position
-# for i in range(len(kp1)):
-#     kp_position[0].append(kp1[i].pt[0])
-#     kp_position[1].append(kp1[i].pt[1])
-# kp_position = list(map(list, zip(*kp_position)))
-# kp_position = np.array(kp_position)
-# np.savetxt('keypoint position', kp_position, delimiter = ',')
-
-
-# # 匹配的描述符
-# type(matches[0])    # 第一個匹配描述符的type -> turple
-# type(matches[259][0])
-# matches[0][0].queryIdx
-# type(unmatched_kp1[0])
-# len(matches)
-
-# type(good[0])       # 第一個篩選後匹配描述符的type -> cv2.DMatch
-# good[0].distance    # 描述符之間的距離，愈小愈好 -> 0.0
-# good[0].queryIdx    # 描述符的索引 -> 0
-# good[0].trainIdx    # 訓練圖像的描述符索引
-# good[0].imgIdx
-
-# # 儲存每幀的相似度
-# np.savetxt('match ratio', total_match_ratio, delimiter = ',')
-# # 儲存秒數
-# np.savetxt('time', save_time, delimiter = ',')
-# # 儲存內點群數量
-# np.savetxt('inlier', total_inlier, delimiter = ',')
-
-# total_match_ratio
-# max(sum_kp1)
-# max(sum_kp2)
