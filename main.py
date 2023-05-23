@@ -57,7 +57,7 @@ duration_video3 = total_frame3 / FPS3
 # 將時間存下
 save_time = []
 
-# 原先用來記錄所有match ratio(未經mapping)
+# 原先用來記錄所有match ratio
 total_match_ratio = []
 
 # 紀錄每幀的內點群數量
